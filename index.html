@@ -14,7 +14,7 @@
 <header class="top wrap"><div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" role="img" aria-label="Tcreate symbol"><path d="M3 25h7V17H3zM13 25h7V10h-7zM23 25h7V3h-7z" fill="#8fae4d"/><path d="M3 28h27" stroke="#20251e" stroke-width="2" stroke-linecap="round"/></svg><span class="brand-copy">MATH LOG<small>BY TCREATE</small></span></div><small>LEARN · RECORD · INSPIRE</small></header>
 <main class="wrap">
 <section class="hero"><div><div class="eyebrow">LEARN · RECORD · INSPIRE</div><h1>YOUR EFFORT.<br><em>OUR MOMENTUM.</em></h1><p>一人ひとりの学習が、みんなの力になる。今日の学びを記録して、テスト当日までの積み重ねを見える形にしよう。</p></div><div class="hero-art"><strong>MATH LOG / COMMUNITY</strong><div>EVERY MINUTE ADDS UP.<br>ONE STEP AT A TIME.</div><div class="creator-stamp"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25h7V17H3zM13 25h7V10h-7zM23 25h7V3h-7z" fill="#c8f169"/><path d="M3 28h27" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span>A TCREATE PROJECT</span></div></div></section>
-<section class="stats"><div class="stat"><label>YOUR STUDY TIME</label><b id="myHours">0<span style="font-size:13px"> min</span></b></div><div class="stat"><label>YOUR RECORDS</label><b id="myRecords">0</b></div><div class="stat"><label>COMMUNITY RECORDS</label><b id="allRecords">0</b></div></section>
+<section class="stats"><div class="stat"><label>あなたの学習時間</label><b id="myHours">0<span style="font-size:13px"> 分</span></b></div><div class="stat"><label>あなたの記録数</label><b id="myRecords">0</b></div><div class="stat"><label>みんなの記録数</label><b id="allRecords">0</b></div></section>
 <section class="panel community-chart" aria-labelledby="communityChartTitle">
  <div class="feed-head"><div><h2 id="communityChartTitle">テストまでの、みんなの学習時間</h2><p class="sub">11月27日までに投稿された学習時間の合計</p></div><span class="chip">テスト当日まで</span></div>
  <div class="donut-area"><div class="donut"><svg id="communityChart" viewBox="0 0 260 260" role="img" aria-label="参加者ごとの学習時間の割合"><circle cx="130" cy="130" r="94" fill="none" stroke="#edf0e7" stroke-width="28"/></svg><div class="donut-center"><strong id="communityTotal">？分</strong><span>みんなの合計</span></div></div><div class="donut-legend" id="chartLegend"><div class="empty">記録を読み込んでいます…</div></div></div>
@@ -81,7 +81,7 @@ function renderCommunityChart(){
 }
 function render(){
  const counted=records.filter(r=>String(r.study_date||"")<=testDeadline); const own=records.filter(mine), total=own.reduce((a,r)=>a+Number(r.minutes),0);
- $("myHours").innerHTML=total+'<span style="font-size:13px"> min</span>'; $("myRecords").textContent=own.length; $("allRecords").textContent=counted.length;
+ $("myHours").innerHTML=total+'<span style="font-size:13px"> 分</span>'; $("myRecords").textContent=own.length; $("allRecords").textContent=counted.length;
  $("personalList").innerHTML=own.length?own.slice().sort((a,b)=>b.study_date.localeCompare(a.study_date)).slice(0,5).map(r=>'<div class="entry"><div class="entry-top"><span class="nick">'+esc(r.subject)+'</span><span class="date">'+esc(r.study_date)+'</span></div><div class="chips"><span class="chip">'+mins(Number(r.minutes))+'</span></div></div>').join(""):'<div class="empty">まだ記録がありません。</div>';
 
 
