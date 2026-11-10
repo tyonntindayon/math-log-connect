@@ -50,13 +50,14 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function mins(n){return n>=60?Math.floor(n/60)+"h "+(n%60? n%60+"m":""):n+"m"}
 function mine(r){return r.nickname===($("nickname").value.trim()||savedNick)}
 function renderCommunityChart(){
- const daily={}; records.forEach(r=>{const d=String(r.study_date||"");if(/^\\d{4}-\\d{2}-\\d{2}$/.test(d))daily[d]=(daily[d]||0)+Number(r.minutes||0)});
- const days=Object.keys(daily).sort(), total=days.reduce((s,d)=>s+daily[d],0);
+ const daily={}; records.forEach(r=>{const d=String(r.study_date||"");if(d.split("-").length===3)daily[d]=(daily[d]||0)+Number(r.minutes||0)});
+ const days=Object.keys(daily).sort(), total=days.reduce((sum,d)=>sum+daily[d],0);
  $("communityTotal").textContent=mins(total);
  const svg=$("communityChart");
  if(!days.length){svg.innerHTML='<text x="360" y="115" text-anchor="middle" fill="#777b72" font-size="13">まだ学習記録がありません</text>'; $("chartStart").textContent="—";$("chartEnd").textContent="—";return}
- const visible=days.slice(-30);let running=0;
- const values=visible.map(d=>{running+=daily[d];return {date:d,value:running}});
+ let running=0;
+ const allValues=days.map(d=>{running+=daily[d];return {date:d,value:running}});
+ const values=allValues.slice(-30);
  const max=Math.max(1,...values.map(v=>v.value)), left=48,right=700,top=18,bottom=188,w=right-left,h=bottom-top;
  const pts=values.map((v,i)=>({x:left+(values.length===1?w/2:i*w/(values.length-1)),y:bottom-(v.value/max)*h}));
  const line=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+","+p.y.toFixed(1)).join(" ");
