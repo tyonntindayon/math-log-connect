@@ -29,7 +29,7 @@
 <div class="two"><div class="field"><label for="studyDate">学習日 *</label><input id="studyDate" type="date" required></div><div class="field"><label for="minutes">学習時間（分）*</label><input id="minutes" type="number" min="1" max="1440" placeholder="60" required></div></div>
 <div class="field"><label for="subject">学習した内容 *</label><input id="subject" maxlength="60" placeholder="例：二次関数、数学II 微分" required></div>
 <div class="field"><label for="memo">ひとこと（任意）</label><textarea id="memo" maxlength="240" placeholder="今日できるようになったこと、次の目標など"></textarea></div><label class="privacy-option"><input id="shareRecord" type="checkbox"><span><strong>ほかの生徒にも公開する</strong><small>チェックしない場合も学習記録は保存されます。公開は任意です。</small></span></label>
-<button class="btn lime" id="submitBtn" type="submit">記録を投稿する ↗</button><div class="status" id="formStatus" role="status"></div>
+<button class="btn lime" id="submitBtn" type="submit">記録を保存する ↗</button><div class="status" id="formStatus" role="status"></div>
 </form></div>
 <aside class="panel"><h2>あなたの学習記録</h2><p class="sub">これまでに記録した学習を確認できます。</p><div id="personalList"><div class="empty">まだ記録がありません。</div></div><div class="notice" id="connectionNotice">現在はデモモードです。共有機能を有効にするには、Supabaseの設定が必要です。</div></aside>
 </section>
@@ -109,7 +109,7 @@ $("nickname").addEventListener("change",()=>localStorage.setItem("mathlog_nickna
 $("recordForm").addEventListener("submit",async e=>{
  e.preventDefault();const nickname=$("nickname").value.trim(),study_date=$("studyDate").value,minutes=Number($("minutes").value),subject=$("subject").value.trim(),memo=$("memo").value.trim();
  if(!nickname||!study_date||study_date>testDeadline||!subject||!Number.isInteger(minutes)||minutes<1||minutes>1440){$("formStatus").textContent="学習日は11月26日までの日付を選んでください。";return;}
- const is_public=$("shareRecord").checked; const row={nickname,study_date,minutes,subject,memo,is_public};$("submitBtn").disabled=true;$("formStatus").textContent="投稿しています…";
+ const is_public=$("shareRecord").checked; const row={nickname,study_date,minutes,subject,memo,is_public};$("submitBtn").disabled=true;$("formStatus").textContent="保存しています…";
  try{if(db){const {error}=await db.from("study_records").insert(row);if(error)throw error}else{const list=localRecords();list.push({...row,id:crypto.randomUUID(),created_at:new Date().toISOString()});localStorage.setItem(localKey,JSON.stringify(list))}
  const personal=[...personalRecords,{...row,id:crypto.randomUUID(),created_at:new Date().toISOString()}];localStorage.setItem(personalKey,JSON.stringify(personal));personalRecords=personal;
  localStorage.setItem("mathlog_nickname",nickname);$("shareRecord").checked=false;$("memo").value="";$("minutes").value="";$("subject").value="";$("formStatus").textContent=db?(is_public?"投稿しました！ほかの生徒にも公開されます。":"記録を保存しました。ほかの生徒には公開されません。"):(is_public?"この端末に保存しました（共有設定は未接続）。":"この端末に非公開で保存しました。");await load()
