@@ -7,11 +7,15 @@ create table if not exists public.study_records (
   minutes integer not null check (minutes between 1 and 1440),
   subject text not null check (char_length(subject) between 1 and 60),
   memo text not null default '' check (char_length(memo) <= 240),
+  is_public boolean not null default false,
   created_at timestamptz not null default now()
 );
+-- Existing installations: add the visibility column safely; existing rows default to private.
+alter table public.study_records add column if not exists is_public boolean not null default false;
 alter table public.study_records enable row level security;
 drop policy if exists "Anyone can read study records" on public.study_records;
-create policy "Anyone can read study records" on public.study_records for select using (true);
+drop policy if exists "Anyone can read public study records" on public.study_records;
+create policy "Anyone can read public study records" on public.study_records for select using (is_public = true);
 drop policy if exists "Anyone can add study records" on public.study_records;
 create policy "Anyone can add study records" on public.study_records for insert with check (
   char_length(nickname) between 1 and 20
