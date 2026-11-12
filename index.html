@@ -51,7 +51,7 @@ const personalKey="mathlog_personal_records_v1";
 let personalRecords=[];
 function isPublicRecord(r){return r.is_public!==false}
 function localRecords(){try{return JSON.parse(localStorage.getItem(localKey)||"[]")}catch{return []}}
-function updateCountdown(){const target=new Date("2026-11-26T00:00:00+09:00").getTime(),left=target-Date.now(),el=$("countdown");if(left<=0){el.innerHTML="<strong>TEST DAY</strong><span>今日はテスト当日！</span>";return}const days=Math.floor(left/86400000),hours=Math.floor(left%86400000/3600000),minutes=Math.floor(left%3600000/60000),seconds=Math.floor(left%60000/1000);el.innerHTML="<strong>"+days+"日 "+String(hours).padStart(2,"0")+":"+String(minutes).padStart(2,"0")+":"+String(seconds).padStart(2,"0")+"</strong><span>残り時間</span>"}
+function updateCountdown(){const target=new Date("2026-11-26T10:55:00+09:00").getTime(),left=target-Date.now(),el=$("countdown");if(left<=0){el.innerHTML="<strong>TEST DAY</strong><span>今日はテスト当日！</span>";return}const days=Math.floor(left/86400000),hours=Math.floor(left%86400000/3600000),minutes=Math.floor(left%3600000/60000),seconds=Math.floor(left%60000/1000);el.innerHTML="<strong>"+days+"日 "+String(hours).padStart(2,"0")+":"+String(minutes).padStart(2,"0")+":"+String(seconds).padStart(2,"0")+"</strong><span>残り時間</span>"}
 updateCountdown();setInterval(updateCountdown,1000);
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function mins(n){return n>=60?Math.floor(n/60)+"h "+(n%60? n%60+"m":""):n+"m"}
